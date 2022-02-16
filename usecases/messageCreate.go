@@ -2,9 +2,11 @@ package usecases
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/Clinet/discordgo-embed"
 )
 
 const commandWord = "dnd-bot"
@@ -25,12 +27,12 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	switch words[1] {
 	case "ping": 
-		fmt.Print("ping command entered")
+		log.Print("ping command entered")
 		messagePong(s, m)
 	default:
-		fmt.Print("Unrecognised command entered")
+		log.Print("Unrecognised command entered")
 		content := fmt.Sprintf("Unrecognised command: %s", words[1])
-		s.ChannelMessageSend(m.ChannelID, content)
+		s.ChannelMessageSendEmbed(m.ChannelID, embed.NewErrorEmbed("Unrecognised", content))
 	}
 }
 
@@ -38,7 +40,7 @@ func messagePong(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// We create the private channel with the user who sent the message.
 	channel, err := s.UserChannelCreate(m.Author.ID)
 	if err != nil {
-		fmt.Println("error creating channel:", err)
+		log.Println("error creating channel:", err)
 		s.ChannelMessageSend(
 			m.ChannelID,
 			"Something went wrong while sending the DM!",
@@ -53,7 +55,7 @@ func messagePong(s *discordgo.Session, m *discordgo.MessageCreate) {
 		// It may occur either when we do not share a server with the
 		// user (highly unlikely as we just received a message) or
 		// the user disabled DM in their settings (more likely).
-		fmt.Println("error sending DM message:", err)
+		log.Println("error sending DM message:", err)
 		s.ChannelMessageSend(
 			m.ChannelID,
 			"Failed to send you a DM. "+
