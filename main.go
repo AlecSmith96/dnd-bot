@@ -2,14 +2,14 @@ package main
 
 import (
 	"log"
-	
+	"os"
+
 	"os/signal"
 	"syscall"
 
-
+	"github.com/AlecSmith96/dnd-bot/adapters"
 	"github.com/AlecSmith96/dnd-bot/entities"
 	"github.com/AlecSmith96/dnd-bot/usecases"
-	"github.com/AlecSmith96/dnd-bot/adapters"
 	"github.com/bwmarrin/discordgo"
 )
 

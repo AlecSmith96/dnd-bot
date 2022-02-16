@@ -16,6 +16,7 @@ const mainChatChannel = "943453314551529494"
 
 func VoiceStateUpdate(s *discordgo.Session, m *discordgo.VoiceStateUpdate) {
 	config := adapters.GetConfig()
+
 	if m.UserID == s.State.User.ID {
 		return
 	}
@@ -24,19 +25,20 @@ func VoiceStateUpdate(s *discordgo.Session, m *discordgo.VoiceStateUpdate) {
 	if m.BeforeUpdate != nil {
 		return
 	}
-
-	fmt.Print(m.GuildID)
 	
 	// send request to get user 
+	client := http.Client{}
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("https://discord.com/api/guilds/%s", m.GuildID), nil)
 	headerContent := fmt.Sprintf("Bot %s", config.Token)
 	req.Header = http.Header{
 		"Authorization": []string{headerContent},
 	}
-	resp, err := http.Get(fmt.Sprintf("https://discord.com/api/guilds/%s", m.GuildID))
+	resp , err := client.Do(req)
 	if err != nil {
-		log.Fatalln(err)
+		log.Printf("unable to send GET request: %v", err)
+
 	}
+
 
 	fmt.Print(resp.Body)
 
@@ -44,7 +46,7 @@ func VoiceStateUpdate(s *discordgo.Session, m *discordgo.VoiceStateUpdate) {
 	jsonDataFromHttp, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
-			panic(err)
+		log.Print("unable to read json data")
 	}
 
 	fmt.Print(jsonDataFromHttp)
