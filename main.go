@@ -8,7 +8,6 @@ import (
 	"syscall"
 
 	"github.com/AlecSmith96/dnd-bot/adapters"
-	"github.com/AlecSmith96/dnd-bot/entities"
 	"github.com/AlecSmith96/dnd-bot/usecases"
 	"github.com/bwmarrin/discordgo"
 )

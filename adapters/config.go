@@ -3,6 +3,8 @@ package adapters
 import (
 	"log"
 	"os"
+
+	"github.com/AlecSmith96/dnd-bot/entities"
 	"gopkg.in/yaml.v2"
 )
 
